@@ -1,4 +1,5 @@
 import java.util.*;
+import ErrorCode;
 
 public class InfoMeteo {
     private InfoStation infoStation;
@@ -15,31 +16,31 @@ public class InfoMeteo {
                 if (parts.length == 2) {
                     boolean success = infoStation.identifyClient(parts[1]);
                     if (success) {
-                        response = "Bienvenue sur le serveur Météo\nOK " + parts[1] + "\nEND";
+                        response = "Bienvenue sur le serveur Météo\n" + ErrorCode.OK + " " + parts[1] + "\nEND";
                     } else {
-                        response = "ERR IDENTIFICATION INCORRECTE\nEND";
+                        response = ErrorCode.ERR_IDENTIFICATION_INCORRECTE + "\nEND";
                     }
                 } else {
-                    response = "ERR SYNTAXE HELLO\nEND";
+                    response = ErrorCode.ERR_SYNTAXE_HELLO + "\nEND";
                 }
                 break;
             case "GET":
                 if (parts.length == 2) {
                     Station station = infoStation.getStation(parts[1]);
                     if (station != null) {
-                        response = "OK " + station.getLieu() + " " + station.getTemperature() + " " + station.getPression() + "\nEND";
+                        response = ErrorCode.OK + " " + station.getLieu() + " " + station.getTemperature() + " " + station.getPression() + "\nEND";
                     } else {
-                        response = "ERR STATION INCONNUE\nEND";
+                        response = ErrorCode.ERR_STATION_INCONNUE + "\nEND";
                     }
                 } else {
-                    response = "ERR SYNTAXE GET\nEND";
+                    response = ErrorCode.ERR_SYNTAXE_GET + "\nEND";
                 }
                 break;
             case "GETALL":
                 List<Station> stations = infoStation.getAllStations();
                 StringBuilder sb = new StringBuilder();
                 for (Station s : stations) {
-                    sb.append("OK ").append(s.getLieu()).append(" ").append(s.getTemperature()).append(" ").append(s.getPression()).append("\n");
+                    sb.append(ErrorCode.OK).append(" ").append(s.getLieu()).append(" ").append(s.getTemperature()).append(" ").append(s.getPression()).append("\n");
                 }
                 sb.append("END");
                 response = sb.toString();
@@ -53,20 +54,20 @@ public class InfoMeteo {
                         if (updated) {
                             response = "Mise à jour acceptée\nEND";
                         } else {
-                            response = "ERR STATION NON IDENTIFIEE\nEND";
+                            response = ErrorCode.ERR_STATION_NON_IDENTIFIEE + "\nEND";
                         }
                     } catch (NumberFormatException e) {
-                        response = "ERR FORMAT NUMERIQUE\nEND";
+                        response = ErrorCode.ERR_FORMAT_NUMERIQUE + "\nEND";
                     }
                 } else {
-                    response = "ERR SYNTAXE PUT\nEND";
+                    response = ErrorCode.ERR_SYNTAXE_PUT + "\nEND";
                 }
                 break;
             case "BYE":
                 response = "Au revoir " + nomClient + "\nEND";
                 break;
             default:
-                response = "ERR COMMANDE INVALIDE\nEND";
+                response = ErrorCode.ERR_COMMANDE_INVALIDE + "\nEND";
         }
         return response;
     }
