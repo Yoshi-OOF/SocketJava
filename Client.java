@@ -22,21 +22,25 @@ public class Client {
                 }
             }
 
-            System.out.print("Entrez une commande (par exemple, GET Colmar): ");
-            String commande = scanner.nextLine();
-            out.println(commande);
-            while ((reponse = in.readLine()) != null) {
-                System.out.println("Serveur: " + reponse);
-                if (reponse.equals("END")) {
+            while (true) {
+                System.out.print("Entrez une commande (par exemple, GET Colmar) ou 'exit' pour quitter: ");
+                String commande = scanner.nextLine();
+                if (commande.equalsIgnoreCase("exit")) {
+                    out.println("BYE");
+                    while ((reponse = in.readLine()) != null) {
+                        System.out.println("Serveur: " + reponse);
+                        if (reponse.equals("END")) {
+                            break;
+                        }
+                    }
                     break;
                 }
-            }
-
-            out.println("BYE");
-            while ((reponse = in.readLine()) != null) {
-                System.out.println("Serveur: " + reponse);
-                if (reponse.equals("END")) {
-                    break;
+                out.println(commande);
+                while ((reponse = in.readLine()) != null) {
+                    System.out.println("Serveur: " + reponse);
+                    if (reponse.equals("END")) {
+                        break;
+                    }
                 }
             }
 
