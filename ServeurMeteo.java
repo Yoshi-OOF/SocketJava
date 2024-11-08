@@ -43,8 +43,10 @@ class ClientHandler implements Runnable {
                         nomClient = parts[1];
                     }
                 }
-                String reponse = infoMeteo.handleCommand(commande, nomClient);
-                out.println(reponse);
+                synchronized (infoMeteo) {
+                    String reponse = infoMeteo.handleCommand(commande, nomClient);
+                    out.println(reponse);
+                }
                 if (commande.equalsIgnoreCase("BYE")) {
                     break;
                 }
