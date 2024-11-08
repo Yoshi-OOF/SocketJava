@@ -1,5 +1,4 @@
 import java.util.*;
-import ErrorCode;
 
 public class InfoMeteo {
     private InfoStation infoStation;
