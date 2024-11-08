@@ -1,15 +1,30 @@
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.io.*;
 
 public class InfoStation {
     private final Map<String, Station> stations;
 
     public InfoStation() {
         stations = new ConcurrentHashMap<>();
-        stations.put("Montélimar", new Station("Montélimar", 34, 1015.3f));
-        stations.put("Laval", new Station("Laval", 24, 1030));
-        stations.put("Paris", new Station("Paris", 26, 1020));
-        stations.put("Colmar", new Station("Colmar", 28, 980));
+        loadStationsFromFile("stations.txt");
+    }
+
+    private void loadStationsFromFile(String fileName) {
+        try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                String[] parts = line.split(" ");
+                if (parts.length == 3) {
+                    String lieu = parts[0];
+                    float temperature = Float.parseFloat(parts[1]);
+                    float pression = Float.parseFloat(parts[2]);
+                    stations.put(lieu, new Station(lieu, temperature, pression));
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public boolean identifyClient(String nom) {
